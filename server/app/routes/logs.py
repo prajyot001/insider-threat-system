@@ -8,87 +8,91 @@ from ..services.ai_service import call_ai, is_cooldown_active, update_cooldown
 from ..services.baseline_engine import update_baseline, calculate_anomaly_score
 router = APIRouter()
 
-
 @router.post("/logs")
 def receive_log(log: LogCreate):
-    
+
     log_dict = log.model_dump()
     print("RECEIVED:", log_dict)
-    # 1️⃣ Rule-based scoring
-    risk_result = calculate_risk(log_dict)
 
+    # 1️⃣ Rule scoring
+    risk_result = calculate_risk(log_dict)
     log_dict["risk_score"] = risk_result["risk_score"]
     log_dict["severity"] = risk_result["severity"]
     log_dict["reasons"] = risk_result["reasons"]
 
     # 2️⃣ Feature engineering
-    features = extract_features(log_dict)
-    log_dict["features"] = features
+    log_dict["features"] = extract_features(log_dict)
 
-    # 3️⃣ Default final score = rule score
-    final_score = log_dict["risk_score"]
-
-    # 4️⃣ Escalation logic
-    device_id = log_dict["device_id"]
-    
+    # 3️⃣ Baseline anomaly
     employee_id = log_dict["employee_id"]
     employee_role = log_dict["employee_role"]
+
     cpu_usage = log_dict["system_metrics"]["cpu_usage"]
     network_bytes = log_dict["network"]["bytes_sent"]
-    print("role of emp"+employee_role)
-    # Calculate anomaly before updating baseline
-    anomaly_score = calculate_anomaly_score(employee_id, cpu_usage, network_bytes)
 
-    log_dict["anomaly_score"] = anomaly_score
-
-    # Update baseline after calculation
-    update_baseline(employee_id, cpu_usage, network_bytes)
-
-    if should_escalate(final_score):
-
-        if not is_cooldown_active(device_id):
-
-            all_logs = get_logs()
-            if len(all_logs) >= 2:
-                recent_logs = all_logs[-3:]
-            else:
-                recent_logs = all_logs
-
-            ai_payload = build_ai_payload(recent_logs, device_role=employee_role)
-
-            print("AI PAYLOAD:", ai_payload)
-
-            ai_result = call_ai(ai_payload)
-
-            if ai_result["ai_score"] is not None:
-                log_dict["ai_score"] = ai_result["ai_score"]
-                log_dict["ai_reason"] = ai_result["reason"]
-                log_dict["ai_severity"] = ai_result["severity"]
-
-                # Combine scores safely
-                final_score = max(final_score, ai_result["ai_score"])
-
-            update_cooldown(device_id)
-            
-    final_score = max(
-    log_dict["risk_score"],
-    anomaly_score,
-    log_dict.get("ai_score", 0)
+    baseline_result = calculate_anomaly_score(
+        employee_id,
+        employee_role,
+        cpu_usage,
+        network_bytes
     )
-    
-    # 5️⃣ Store final score
+
+    anomaly_score = baseline_result["anomaly_score"]
+    log_dict["anomaly_score"] = anomaly_score
+    log_dict["baseline_deviation"] = {
+        "employee_cpu_dev": baseline_result["employee_cpu_dev"],
+        "role_cpu_dev": baseline_result["role_cpu_dev"],
+        "employee_net_dev": baseline_result["employee_net_dev"],
+        "role_net_dev": baseline_result["role_net_dev"]
+    }
+
+    update_baseline(
+        employee_id,
+        employee_role,
+        cpu_usage,
+        network_bytes
+    )
+
+    # 4️⃣ AI escalation decision (use rule + anomaly)
+    pre_ai_score = max(log_dict["risk_score"], anomaly_score)
+
+    device_id = log_dict["device_id"]
+
+    if should_escalate(pre_ai_score) and not is_cooldown_active(device_id):
+
+        all_logs = get_logs() + [log_dict]
+        recent_logs = all_logs[-3:]
+
+        ai_payload = build_ai_payload(recent_logs)
+        print("AI PAYLOAD:", ai_payload)
+
+        ai_result = call_ai(ai_payload)
+
+        if ai_result["ai_score"] is not None:
+            log_dict["ai_score"] = ai_result["ai_score"]
+            log_dict["ai_reason"] = ai_result["reason"]
+            log_dict["ai_severity"] = ai_result["severity"]
+
+        update_cooldown(device_id)
+
+    # 5️⃣ Final composite score
+    final_score = max(
+        log_dict["risk_score"],
+        anomaly_score,
+        log_dict.get("ai_score", 0)
+    )
+
     log_dict["final_score"] = final_score
 
-    # 6️⃣ Store enriched log
+    # 6️⃣ Store
     add_log(log_dict)
 
     return {
         "status": "log received",
         "rule_score": log_dict["risk_score"],
-        "final_score": final_score,
-        "severity": log_dict["severity"]
+        "anomaly_score": anomaly_score,
+        "final_score": final_score
     }
-
 
 @router.get("/logs")
 def view_logs():

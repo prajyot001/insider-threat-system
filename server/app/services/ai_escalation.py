@@ -27,7 +27,36 @@ def build_ai_payload(recent_logs):
     }
 
     return payload
+def build_behavioral_ai_payload(current_log, daily_summary, recent_logs):
 
+    return {
+        "employee_role": current_log["employee_role"],
+
+        # Current snapshot
+        "current_activity": {
+            "cpu_usage": current_log["system_metrics"]["cpu_usage"],
+            "network_bytes": current_log["network"]["bytes_sent"],
+            "rule_score": current_log["risk_score"],
+            "anomaly_score": current_log["anomaly_score"],
+            "risk_velocity": current_log.get("risk_velocity", 0)
+        },
+
+        # Daily behavior summary
+        "daily_summary": daily_summary,
+
+        # Recent trend
+        "recent_scores": [
+            l["risk_score"] for l in recent_logs
+        ],
+
+        # Baseline deviation
+        "role_cpu_deviation": current_log["baseline_deviation"]["role_cpu_dev"],
+        "role_network_deviation": current_log["baseline_deviation"]["role_net_dev"],
+
+        "after_hours": current_log["features"]["after_hours"],
+        "suspicious_process_count": current_log["features"]["suspicious_count"]
+    }
+    
 def detect_trend(scores):
     if not scores:
         return "unknown"

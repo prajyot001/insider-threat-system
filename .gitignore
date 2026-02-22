@@ -12,10 +12,12 @@ ENV/
 .venv/
 .env/
 .env.*
+.env
 
 #fastapi_env/
 instance/
 .webassets-cache
 
 .log
-
+temp/
+tmp/

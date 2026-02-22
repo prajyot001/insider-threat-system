@@ -27,8 +27,4 @@ class NetworkMetrics(BaseModel):
 
 
 class LogCreate(BaseModel):
-    device_id: str
-    device_info: DeviceInfo
-    system_metrics: SystemMetrics
-    network: NetworkMetrics
-    suspicious_processes: List[ProcessInfo]
+    model_config = {"extra": "allow"}

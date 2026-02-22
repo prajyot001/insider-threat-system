@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def map_cpu_level(cpu):
     if cpu < 50:
         return "low"
@@ -17,17 +20,23 @@ def map_network_level(bytes_sent):
 
 
 def extract_features(log):
+
     system = log["system_metrics"]
     network = log["network"]
 
-    return {
-        "cpu_level": map_cpu_level(system["cpu_usage"]),
-        "network_level": map_network_level(network["bytes_sent"]),
-        "suspicious_count": len(log["suspicious_processes"]),
-        "after_hours": is_after_hours(system["timestamp"]),
+    features = {
+        "cpu_level": "high" if system["cpu_usage"] > 50 else "low",
+        "network_level": "high" if network["bytes_sent"] > 50_000_000 else "low",
+        "suspicious_count": len(log.get("suspicious_processes", [])),
+        "after_hours": False,
         "rule_score": log.get("risk_score", 0)
     }
 
+    hour = datetime.fromisoformat(system["timestamp"]).hour
+    if hour < 7 or hour > 21:
+        features["after_hours"] = True
+
+    return features
 
 def is_after_hours(timestamp):
     from datetime import datetime

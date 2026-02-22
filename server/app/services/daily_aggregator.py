@@ -10,7 +10,10 @@ daily_store = defaultdict(lambda: {
     "usb_events": 0,
     "after_hours_sessions": 0,
     "rule_score_sum": 0,
-    "anomaly_score_sum": 0
+    "anomaly_score_sum": 0,
+    "usb_events": 0,
+    "file_events": 0,
+    "screenshot_events": 0,
 })
 
 
@@ -39,6 +42,15 @@ def update_daily_summary(log_dict):
 
     if log_dict["features"]["after_hours"]:
         summary["after_hours_sessions"] += 1
+        
+    if log_dict["external_devices"]["usb_connected_count"] > 0:
+        summary["usb_events"] += 1
+
+    if log_dict["file_activity"]["recent_file_access_count"] > 0:
+        summary["file_events"] += 1
+
+    if log_dict["screen_activity"]["screenshot_taken"]:
+        summary["screenshot_events"] += 1
         
         
 def get_daily_summary(employee_id):

@@ -1,7 +1,7 @@
 {
   "server_url": "http://127.0.0.1:8000/logs",
-  "device_id": "DEV-LOCAL-001",
-  "employee_id": "EMP-001",
+  "device_id": "26e51c64-35e6-4cc0-a26d-0d5cb86d3234",
+  "employee_id": "35916148-a5c0-47f3-9c15-3f24c6002864",
   "employee_role": "developer",
   "log_interval_seconds": 30
 }

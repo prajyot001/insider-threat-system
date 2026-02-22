@@ -134,14 +134,23 @@ def receive_log(log: LogCreate):
         severity = "low"
 
     log_dict["final_severity"] = severity
+    from ..database.log_repository import (
+    insert_activity_log,
+    insert_telemetry_snapshot,
+    insert_alert
+    )
+    insert_activity_log(log_dict)
+    insert_telemetry_snapshot(log_dict)
 
+    if log_dict.get("alert"):
+        insert_alert(log_dict)
     #daily summary update
     update_daily_summary(log_dict)
     
     daily_summary = get_daily_summary(employee_id)
     # 6️⃣ Store
     add_log(log_dict)
-
+    
     return {
         "status": "log received",
         "rule_score": log_dict["risk_score"],

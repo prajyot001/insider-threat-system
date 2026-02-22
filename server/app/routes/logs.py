@@ -76,13 +76,40 @@ def receive_log(log: LogCreate):
         update_cooldown(device_id)
 
     # 5️⃣ Final composite score
-    final_score = max(
-        log_dict["risk_score"],
-        anomaly_score,
-        log_dict.get("ai_score", 0)
-    )
+    rule_score = log_dict["risk_score"]
+    ai_score = log_dict.get("ai_score", 0)
+    all_logs = get_logs()
+
+    if len(all_logs) >= 1:
+        last_score = all_logs[-1]["final_score"]
+        velocity = rule_score - last_score
+    else:
+        velocity = 0
+
+    if velocity > 20:
+        velocity_boost = 10
+    else:
+        velocity_boost = 0
+        
+    final_score = int(
+        (0.4 * rule_score) +
+        (0.35 * anomaly_score) +
+        (0.25 * ai_score)
+    ) + velocity_boost
+    
+    log_dict["risk_velocity"] = velocity
+    log_dict["velocity_boost"] = velocity_boost
 
     log_dict["final_score"] = final_score
+    
+    if final_score >= 70:
+        severity = "high"
+    elif final_score >= 40:
+        severity = "medium"
+    else:
+        severity = "low"
+
+    log_dict["final_severity"] = severity
 
     # 6️⃣ Store
     add_log(log_dict)

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { supabase } from "../services/supabaseClient";
-import "../styles/auth.css";
 import { useNavigate } from "react-router-dom";
+import AuthLayout from "../components/AuthLayout";
 
 function Signup() {
+  const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -18,30 +19,56 @@ function Signup() {
 
     if (error) {
       alert(error.message);
-    } else {
-      alert("Check your email for verification!");
-      navigate("/");
+      return;
     }
+
+    await supabase.from("companies").insert([
+      {
+        company_name: companyName,
+        plan_type: "basic",
+      },
+    ]);
+
+    alert("Account created! Please verify your email.");
+    navigate("/");
   };
 
   return (
-    <div className="auth-container">
-      <form onSubmit={handleSignup} className="auth-form">
-        <h2>Company Sign Up</h2>
+    <AuthLayout
+      title="Create Account"
+      subtitle="Register your company and start monitoring securely."
+    >
+      <form onSubmit={handleSignup}>
+        <input
+          type="text"
+          placeholder="Company Name"
+          onChange={(e) => setCompanyName(e.target.value)}
+          required
+        />
+
         <input
           type="email"
           placeholder="Admin Email"
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
+
         <input
           type="password"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Sign Up</button>
-        <p onClick={() => navigate("/")}>Already have account? Login</p>
+
+        <button type="submit">Create Account</button>
       </form>
-    </div>
+
+      <div className="links">
+        <span onClick={() => navigate("/")}>
+          Already have an account? Login
+        </span>
+      </div>
+    </AuthLayout>
   );
 }
 

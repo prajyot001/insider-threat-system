@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../services/supabaseClient";
 import { useNavigate } from "react-router-dom";
-import "../styles/auth.css";
+import AuthLayout from "../components/AuthLayout";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -24,23 +24,34 @@ function Login() {
   };
 
   return (
-    <div className="auth-container">
-      <form onSubmit={handleLogin} className="auth-form">
-        <h2>Admin Login</h2>
+    <AuthLayout
+      title="Log In"
+      subtitle="Enter your email and password to access dashboard."
+    >
+      <form onSubmit={handleLogin}>
         <input
           type="email"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
+
         <input
           type="password"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Login</button>
-        <p onClick={() => navigate("/signup")}>Create Account</p>
+
+        <button type="submit">Sign In</button>
       </form>
-    </div>
+
+      <div className="links">
+        <span onClick={() => navigate("/signup")}>
+          Don't have an account? Sign Up
+        </span>
+      </div>
+    </AuthLayout>
   );
 }
 

@@ -1,23 +1,61 @@
 import { Link } from "react-router-dom";
 import "../styles/global.css";
+import { motion } from "framer-motion";
+import logo from "../assets/icons/logo.png";
 
 function Home() {
   return (
+    
     <div className="home-wrapper">
-      
-      {/* Hero Section */}
-      <section className="hero">
-        <h1>Employee Monitoring & Insider Threat Detection</h1>
-        <p>
-          Protect your organization with real-time activity monitoring,
-          intelligent risk scoring, and advanced security insights.
-        </p>
 
-        <div className="hero-buttons">
-          <Link to="/login" className="btn-primary">Sign In</Link>
-          <Link to="/signup" className="btn-outline">Sign Up</Link>
+       {/* Top Header */}
+      <header className="top-header">
+        <div className="logo-section">
+          <img src={logo} alt="Logo" className="real-logo" />
+          <span className="company-name">SecureMonitor</span>
         </div>
-      </section>
+      </header>
+
+      {/* Hero Section */}
+      <div className="home-wrapper">
+        <motion.section
+          className="hero"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            Employee Monitoring & Insider Threat Detection
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            Real-time activity tracking, intelligent risk scoring, and secure
+            administrative control.
+          </motion.p>
+
+          <motion.div
+            className="hero-buttons"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+          >
+            <Link to="/login" className="btn-primary">
+              Sign In
+            </Link>
+            <Link to="/signup" className="btn-outline">
+              Sign Up
+            </Link>
+          </motion.div>
+        </motion.section>
+      </div>
 
       {/* Features Section */}
       <section className="features">
@@ -26,17 +64,26 @@ function Home() {
         <div className="feature-grid">
           <div className="feature-card">
             <h3>Real-Time Monitoring</h3>
-            <p>Track employee activity, device usage, and system events instantly.</p>
+            <p>
+              Track employee activity, device usage, and system events
+              instantly.
+            </p>
           </div>
 
           <div className="feature-card">
             <h3>Risk Scoring</h3>
-            <p>Automatically calculate behavioral risk levels using intelligent analysis.</p>
+            <p>
+              Automatically calculate behavioral risk levels using intelligent
+              analysis.
+            </p>
           </div>
 
           <div className="feature-card">
             <h3>Alert System</h3>
-            <p>Receive alerts for suspicious actions and abnormal activity patterns.</p>
+            <p>
+              Receive alerts for suspicious actions and abnormal activity
+              patterns.
+            </p>
           </div>
 
           <div className="feature-card">
@@ -67,7 +114,6 @@ function Home() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

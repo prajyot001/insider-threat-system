@@ -10,3 +10,131 @@
     transform: translateY(0);
   }
 }
+.dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+  background: #0f1115;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #14181f;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.dashboard-wrapper.collapsed .sidebar {
+  width: 80px;
+}
+
+/* Nav links */
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #bbb;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+  background: #1f2530;
+  color: #fff;
+}
+
+.nav-links a.active {
+  background: #c9a86a;
+  color: #000;
+  font-weight: bold;
+}
+
+.logout-btn {
+  margin-top: auto;
+  background: none;
+  border: none;
+  color: #ff5c5c;
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Main */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+/* Topbar */
+.topbar {
+  height: 60px;
+  background: #14181f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  border-bottom: 1px solid #222;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.admin-avatar {
+  width: 35px;
+  height: 35px;
+  background: #c9a86a;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.page-content {
+  padding: 25px;
+  overflow-y: auto;
+}
+
+
+/* Sidebar Header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+/* Toggle button inside sidebar */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* When collapsed */
+
+.dashboard-wrapper.collapsed .toggle-btn {
+  margin-top: 10px;
+}

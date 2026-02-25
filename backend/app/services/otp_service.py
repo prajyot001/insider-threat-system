@@ -6,10 +6,15 @@ otp_storage = {}
 def generate_otp():
     return str(random.randint(100000, 999999))
 
-def save_otp(email: str, otp: str):
+def save_otp(email: str, otp: str, signup_data: dict):
     otp_storage[email] = {
         "otp": otp,
-        "expiry": datetime.utcnow() + timedelta(minutes=5)
+        "expiry": datetime.utcnow() + timedelta(minutes=5),
+        "companyName": signup_data["companyName"],
+        "companyEmail": signup_data["companyEmail"],
+        "adminName": signup_data["adminName"],
+        "adminEmail": signup_data["adminEmail"],
+        "password": signup_data["password"]
     }
 
 def verify_otp(email: str, user_otp: str):

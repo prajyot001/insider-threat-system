@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import resend
 
 load_dotenv()
-print("API KEY:", os.getenv("RESEND_API_KEY"))
 resend.api_key = os.getenv("RESEND_API_KEY")
 
 def send_otp_email(to_email: str, otp: str):

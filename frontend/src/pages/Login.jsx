@@ -3,11 +3,11 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/auth.css";
 import logo from "../assets/icons/logo.png";
-import Loader from "../components/common/Loader";
+import LoaderOverlay from "../components/common/Loader";
 
 function Login() {
   const navigate = useNavigate();
-  const [showLoader, setShowLoader] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -29,18 +29,18 @@ function Login() {
     try {
       await axios.post("http://127.0.0.1:8000/auth/login", formData);
 
-      setShowLoader(true);
+      setShowOverlay(true);
 
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
     } catch (error) {
       alert("Invalid email or password");
-    } finally {
       setLoading(false);
     }
   };
-  if (showLoader) return <Loader />;
+
+  if (showOverlay) return <LoaderOverlay />;
   return (
     <div className="auth-wrapper">
       <header className="top-header">
@@ -72,10 +72,11 @@ function Login() {
 
           <button
             type="submit"
-            className="btn-primary full-width"
+            className={`btn-primary full-width login-btn ${loading ? "loading" : ""}`}
             disabled={loading}
           >
-            {loading ? <div className="spinner"></div> : "Login"}
+            <span className="btn-text">Login</span>
+            <div className="btn-spinner"></div>
           </button>
         </form>
 

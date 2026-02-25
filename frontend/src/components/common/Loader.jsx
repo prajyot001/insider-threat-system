@@ -1,10 +1,10 @@
-function Loader() {
+function LoadingOverlay() {
   return (
-    <div className="loader-screen">
-      <div className="loader-spinner"></div>
-      <p>Loading ...</p>
+    <div className="overlay">
+      <div className="ring-loader"></div>
+      <p className="overlay-text">Initializing Security Engine...</p>
     </div>
   );
 }
 
-export default Loader;
+export default LoadingOverlay;

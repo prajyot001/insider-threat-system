@@ -1,9 +1,10 @@
+import { useState } from "react";
+import "../styles/dashboard.css"; 
 function Dashboard() {
   return (
-    <div style={{ padding: "40px", color: "white", background: "black", minHeight: "100vh" }}>
-      <h1>Dashboard</h1>
-      <p>Login successful 🎉</p>
-    </div>
+  <div className="dashboard-container">
+  <h1>Dashboard</h1>
+</div>
   );
 }
 

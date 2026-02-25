@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routers import auth
 from dotenv import load_dotenv
+from app.routers import dashboard
 import os
 
 load_dotenv()
@@ -17,3 +18,6 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+
+
+app.include_router(dashboard.router)

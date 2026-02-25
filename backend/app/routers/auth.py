@@ -31,6 +31,41 @@ def signup(data: SignupRequest):
     return {"message": "OTP sent to admin email"}
 
 
+from pydantic import BaseModel
+from app.services.security import verify_password
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+@router.post("/login")
+def login(data: LoginRequest):
+
+    # Find user by email
+    response = supabase.table("employees").select("*").eq("email", data.email).execute()
+
+    if not response.data:
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+
+    user = response.data[0]
+
+    # Verify password
+    if not verify_password(data.password, user["password"]):
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+
+    return {
+        "message": "Login successful",
+        "user": {
+            "id": user["employee_id"],
+            "name": user["name"],
+            "role": user["role"],
+            "company_id": user["company_id"]
+        }
+    }
+    
+    
+    
 @router.post("/verify-otp")
 def verify(data: OTPVerifyRequest):
 

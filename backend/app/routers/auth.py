@@ -53,12 +53,10 @@ def login(data: LoginRequest):
     SECRET_KEY = os.getenv("SECRET_KEY")
     ALGORITHM = "HS256"
     # temp hardcoded admin credentials for testing
-    print("User found:", user)
-    print("Entered password:", data.password)
-    print("Stored hash:", user["password"])
+  
     # Find user by email
     response = supabase.table("employees").select("*").eq("email", data.email).execute()
-
+    print("Supabase response:", response)  # Debugging line
     if not response.data:
         raise HTTPException(status_code=400, detail="Invalid credentials")
 

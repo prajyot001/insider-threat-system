@@ -1,0 +1,3 @@
+.status.active { color: #4caf50; }
+.status.blocked { color: #f44336; }
+.status.offline { color: #ff9800; } 

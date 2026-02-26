@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import DashboardHome from "./pages/DashboardHome";
 import Employees from "./pages/Employees";
-// import Devices from "./pages/Devices";
+import Devices from "./pages/Devices";
 import Alerts from "./pages/Alerts";
 // import Logs from "./pages/Logs";
 // import Reports from "./pages/Reports";
@@ -23,7 +23,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
           <Route path="employees" element={<Employees />} />
-          {/* <Route path="devices" element={<Devices />} /> */}
+          <Route path="devices" element={<Devices />} />
           <Route path="alerts" element={<Alerts />} />
           {/* <Route path="logs" element={<Logs />} />
           <Route path="reports" element={<Reports />} />

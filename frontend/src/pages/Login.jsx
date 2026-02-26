@@ -5,7 +5,6 @@ import logo from "../assets/icons/logo.png";
 import LoaderOverlay from "../components/common/Loader";
 import api from "../services/api";
 
-
 function Login() {
   const navigate = useNavigate();
   const [showOverlay, setShowOverlay] = useState(false);
@@ -29,18 +28,19 @@ function Login() {
 
     try {
       const res = await api.post("/auth/login", formData);
-      
+      console.log("BASE URL:", api.defaults.baseURL);
+      console.log("FULL REQUEST URL:", res.request.responseURL);
+      console.log("ENV URL:", process.env.REACT_APP_API_URL);
       localStorage.setItem("token", res.data.access_token);
       setShowOverlay(true);
       const token = localStorage.getItem("token");
 
       if (!token) {
         navigate("/login");
-      }
-      else {
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
+      } else {
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1500);
       }
     } catch (error) {
       console.error("Login error:", error);

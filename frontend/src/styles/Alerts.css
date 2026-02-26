@@ -1,0 +1,4 @@
+.severity.low { color: #4caf50; }
+.severity.medium { color: #ff9800; }
+.severity.high { color: #f44336; }
+.severity.critical { color: #ff0000; font-weight: bold; }

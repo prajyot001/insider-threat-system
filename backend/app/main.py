@@ -17,8 +17,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://insider-threat-system-9qhycosaf-prajyot-s-projects-dadd63ca.vercel.app/",
+        "https://insider-threat-seven.vercel.app/login",
     ],
+  
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

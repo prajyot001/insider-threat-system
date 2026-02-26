@@ -52,6 +52,10 @@ load_dotenv()
 def login(data: LoginRequest):
     SECRET_KEY = os.getenv("SECRET_KEY")
     ALGORITHM = "HS256"
+    # temp hardcoded admin credentials for testing
+    print("User found:", user)
+    print("Entered password:", data.password)
+    print("Stored hash:", user["password"])
     # Find user by email
     response = supabase.table("employees").select("*").eq("email", data.email).execute()
 

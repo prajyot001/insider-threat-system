@@ -3,7 +3,10 @@ from app.routers import auth
 from dotenv import load_dotenv
 from app.routers import dashboard
 from app.routers import employees
+from app.routers import reports
+from app.routers import auth, employees, alerts, devices
 import os
+
 
 load_dotenv()
 app = FastAPI()
@@ -22,3 +25,7 @@ app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 
 app.include_router(employees.router)
 app.include_router(dashboard.router)
+app.include_router(reports.router)
+app.include_router(auth.router)
+app.include_router(alerts.router)
+app.include_router(devices.router)

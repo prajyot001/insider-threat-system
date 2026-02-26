@@ -26,7 +26,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     console.log("BASE URL:", api.defaults.baseURL);
-      console.log("ENV URL:", process.env.REACT_APP_API_URL);
+    console.log("ENV URL:", process.env.REACT_APP_API_URL);
     try {
       const res = await api.post("/auth/login", formData);
       console.log("BASE URL:", api.defaults.baseURL);

@@ -1,0 +1,37 @@
+.generate-btn {
+  background: #2196f3;
+  padding: 10px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.token-box {
+  background: #222;
+  padding: 10px;
+  word-break: break-all;
+  margin-bottom: 10px;
+}
+
+.copy-btn {
+  background: #4caf50;
+  padding: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  background: #f44336;
+  padding: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.expiry {
+  font-size: 12px;
+  color: #ccc;
+}

@@ -1,0 +1,71 @@
+.employees-container {
+  padding: 30px;
+  color: white;
+}
+
+.employees-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  background: #4caf50;
+  padding: 8px 15px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #111;
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+.employee-table th {
+  background: #1c1c1c;
+}
+
+.risk-badge {
+  background: #ff4d4d;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.status.active {
+  color: #4caf50;
+}
+
+.status.inactive {
+  color: #f44336;
+}
+
+.action-btn {
+  background: #2196f3;
+  margin-right: 5px;
+  border: none;
+  padding: 5px 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.danger-btn {
+  background: #f44336;
+  border: none;
+  padding: 5px 8px;
+  color: white;
+  cursor: pointer;
+}
+.add-btn {
+  position: relative;
+  z-index: 1000;
+}

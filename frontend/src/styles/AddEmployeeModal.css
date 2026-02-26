@@ -1,0 +1,48 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: #111;
+  padding: 25px;
+  width: 400px;
+  border-radius: 8px;
+  color: white;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-box input,
+.modal-box select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  background: #222;
+  border: 1px solid #333;
+  color: white;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-actions button[type="submit"] {
+  background: #4caf50;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}

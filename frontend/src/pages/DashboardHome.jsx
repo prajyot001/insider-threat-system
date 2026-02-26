@@ -11,7 +11,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import axios from "axios";
+
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 

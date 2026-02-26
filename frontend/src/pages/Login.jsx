@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/auth.css";
 import logo from "../assets/icons/logo.png";
 import LoaderOverlay from "../components/common/Loader";
+import api from "../services/api";
 
 
 function Login() {
@@ -28,10 +28,8 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/auth/login",
-        formData,
-      );
+      const res = await api.post("/auth/login", formData);
+      
       localStorage.setItem("token", res.data.access_token);
       setShowOverlay(true);
       const token = localStorage.getItem("token");

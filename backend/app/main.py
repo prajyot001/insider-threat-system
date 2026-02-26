@@ -17,7 +17,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://insider-backend-jggo.onrender.com/.vercel.app"
+        "https://insider-threat-system-9qhycosaf-prajyot-s-projects-dadd63ca.vercel.app/`",
     ],
     allow_credentials=True,
     allow_methods=["*"],

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import axios from "axios";
 import "../styles/auth.css";
 import logo from "../assets/icons/logo.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
+
+
 function Signup() {
   const [step, setStep] = useState(1);
   const [otp, setOtp] = useState("");
@@ -27,7 +29,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8000/auth/signup", formData);
+      await api.post("/auth/signup", formData);
       setStep(2);
     } catch (error) {
       alert("Failed to send OTP");
@@ -38,7 +40,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8000/auth/verify-otp", {
+      await api.post("/auth/verify-otp", {
         adminEmail: formData.adminEmail,
         otp: otp,
       });

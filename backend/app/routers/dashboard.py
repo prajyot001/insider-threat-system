@@ -7,7 +7,7 @@ from collections import defaultdict
 
 
 router = APIRouter()
-
+i=0
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -45,44 +45,55 @@ def get_dashboard_overview():
 
 @router.get("/dashboard/charts")
 def get_dashboard_charts():
+    try:
+        global i
+        i+=1
+       
+        print("Fetching dashboard charts data..."+str(i)+" time")
+        # --- Risk Trend (Last 7 Days) ---
+        seven_days_ago = (datetime.utcnow() - timedelta(days=7)).isoformat()
 
-    # --- Risk Trend (Last 7 Days) ---
-    seven_days_ago = (datetime.utcnow() - timedelta(days=7)).isoformat()
+        logs = supabase.table("activity_logs") \
+            .select("created_at,risk_score") \
+            .gte("created_at", seven_days_ago) \
+            .execute()
 
-    logs = supabase.table("activity_logs") \
-        .select("created_at,risk_score") \
-        .gte("created_at", seven_days_ago) \
-        .execute()
+        daily_risk = defaultdict(int)
 
-    daily_risk = defaultdict(int)
+        for log in logs.data:
+            date = log["created_at"][:10]  # YYYY-MM-DD
+            daily_risk[date] += log.get("risk_score", 0)
 
-    for log in logs.data:
-        date = log["created_at"][:10]  # YYYY-MM-DD
-        daily_risk[date] += log.get("risk_score", 0)
-
-    risk_trend = [
-        {"day": date, "risk": value}
-        for date, value in sorted(daily_risk.items())
-    ]
+        risk_trend = [
+            {"day": date, "risk": value}
+            for date, value in sorted(daily_risk.items())
+        ]
 
 
-    # --- Alerts by Severity ---
-    alerts = supabase.table("alerts") \
-        .select("severity") \
-        .execute()
+        # --- Alerts by Severity ---
+        alerts = supabase.table("alerts") \
+            .select("severity") \
+            .execute()
 
-    severity_count = defaultdict(int)
+        severity_count = defaultdict(int)
 
-    for alert in alerts.data:
-        severity = alert["severity"]
-        severity_count[severity] += 1
+        for alert in alerts.data:
+            severity = alert["severity"]
+            severity_count[severity] += 1
 
-    alerts_severity = [
-        {"name": key, "value": value}
-        for key, value in severity_count.items()
-    ]
+        alerts_severity = [
+            {"name": key, "value": value}
+            for key, value in severity_count.items()
+        ]
 
-    return {
-        "riskTrend": risk_trend,
-        "alertsSeverity": alerts_severity
-    }
+        return {
+            "riskTrend": risk_trend,
+            "alertsSeverity": alerts_severity
+        }
+    except Exception as e:
+        print("Dashboard Chart Error:", e)
+        return {
+            "riskTrend": [],
+            "alertsSeverity": []
+        }
+    

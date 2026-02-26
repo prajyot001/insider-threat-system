@@ -12,11 +12,13 @@ import {
 } from "recharts";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 
 function DashboardHome() {
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [stats] = useState(null);
+  const [loading] = useState(true);
   const [chartData, setChartData] = useState(null);
+  const fetched = useRef(false);
   const fetchCharts = async () => {
     try {
       const res = await axios.get("http://127.0.0.1:8000/dashboard/charts");
@@ -26,24 +28,15 @@ function DashboardHome() {
     }
   };
 
-  fetchCharts();
   
 
   const COLORS = ["#ff4d4d", "#f5b942", "#4caf50"];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get("http://127.0.0.1:8000/dashboard/overview");
-        setStats(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (fetched.current) return;
+    fetched.current = true;
 
-    fetchData();
+    fetchCharts();
   }, []);
 
   return (

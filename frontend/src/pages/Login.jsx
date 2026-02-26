@@ -4,7 +4,7 @@ import "../styles/auth.css";
 import logo from "../assets/icons/logo.png";
 import LoaderOverlay from "../components/common/Loader";
 import api from "../services/api";
-
+import axios from "axios";
 function Login() {
   const navigate = useNavigate();
   const [showOverlay, setShowOverlay] = useState(false);
@@ -28,9 +28,11 @@ function Login() {
     console.log("BASE URL:", api.defaults.baseURL);
     console.log("ENV URL:", process.env.REACT_APP_API_URL);
     try {
-      const api = axios.create({
-  baseURL: "https://insider-backend-jggo.onrender.com",
-});
+      const res = axios.create({
+        baseURL: "https://insider-backend-jggo.onrender.com",
+      });
+      console.log("BASE URL:", res.defaults.baseURL);
+      // const res = await api.post("/auth/login", formData);
       console.log("BASE URL:", api.defaults.baseURL);
       console.log("FULL REQUEST URL:", res.request.responseURL);
       console.log("ENV URL:", process.env.REACT_APP_API_URL);

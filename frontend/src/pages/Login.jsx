@@ -26,7 +26,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     console.log("BASE URL:", api.defaults.baseURL);
-    console.log("FULL REQUEST URL:", res.request.responseURL);
+    console.log("FULL REQUEST URL:", `${api.defaults.baseURL}/auth/login`);
     try {
       const res = await api.post("/auth/login", formData);
       console.log("BASE URL:", api.defaults.baseURL);

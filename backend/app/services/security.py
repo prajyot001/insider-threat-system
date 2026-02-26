@@ -5,4 +5,7 @@ def hash_password(password: str):
     return bcrypt.hashpw(password.encode(), salt).decode()
 
 def verify_password(password: str, hashed: str):
-    return bcrypt.checkpw(password.encode(), hashed.encode())
+    return bcrypt.checkpw(
+        password.encode(),
+        hashed.strip().encode()
+    )

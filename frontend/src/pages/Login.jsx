@@ -5,6 +5,7 @@ import "../styles/auth.css";
 import logo from "../assets/icons/logo.png";
 import LoaderOverlay from "../components/common/Loader";
 
+
 function Login() {
   const navigate = useNavigate();
   const [showOverlay, setShowOverlay] = useState(false);
@@ -27,14 +28,24 @@ function Login() {
     setLoading(true);
 
     try {
-      await axios.post("http://127.0.0.1:8000/auth/login", formData);
-
+      const res = await axios.post(
+        "http://127.0.0.1:8000/auth/login",
+        formData,
+      );
+      localStorage.setItem("token", res.data.access_token);
       setShowOverlay(true);
+      const token = localStorage.getItem("token");
 
+      if (!token) {
+        navigate("/login");
+      }
+      else {
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
+      }
     } catch (error) {
+      console.error("Login error:", error);
       alert("Invalid email or password");
       setLoading(false);
     }

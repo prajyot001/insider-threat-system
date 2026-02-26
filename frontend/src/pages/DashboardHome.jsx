@@ -1,4 +1,5 @@
 import "../styles/dashboardHome.css";
+import api from "../services/api";
 import {
   LineChart,
   Line,
@@ -15,28 +16,60 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 
 function DashboardHome() {
-  const [stats] = useState(null);
-  const [loading] = useState(true);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState(null);
+  const [recentAlerts, setRecentAlerts] = useState([]);
   const fetched = useRef(false);
+
+  //chartdata = { riskTrend: [...], alertsSeverity: [...] }
   const fetchCharts = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/dashboard/charts");
+      const res = await api.get("/dashboard/charts");
       setChartData(res.data);
     } catch (err) {
       console.error(err);
     }
   };
 
-  
+  // fetch stats for summary cards
+
+  const fetchData = async () => {
+    try {
+      const res = await api.get("/dashboard/overview");
+      setStats(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // fetch recent alerts - for simplicity, using static data in the table section
+
+  const fetchRecentAlerts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await api.get("/dashboard/alerts", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRecentAlerts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const COLORS = ["#ff4d4d", "#f5b942", "#4caf50"];
 
   useEffect(() => {
     if (fetched.current) return;
     fetched.current = true;
-
+    fetchData();
     fetchCharts();
+    fetchRecentAlerts();
   }, []);
 
   return (
@@ -123,24 +156,27 @@ function DashboardHome() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>John Doe</td>
-              <td>USB Access</td>
-              <td className="severity-high">High</td>
-              <td>2 min ago</td>
-            </tr>
-            <tr>
-              <td>Sarah Smith</td>
-              <td>File Download</td>
-              <td className="severity-medium">Medium</td>
-              <td>10 min ago</td>
-            </tr>
-            <tr>
-              <td>Alex Johnson</td>
-              <td>Login Attempt</td>
-              <td className="severity-low">Low</td>
-              <td>25 min ago</td>
-            </tr>
+            {recentAlerts.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="4"
+                  style={{ textAlign: "center", padding: "20px" }}
+                >
+                  No recent alerts
+                </td>
+              </tr>
+            ) : (
+              recentAlerts.map((alert) => (
+                <tr key={alert.id}>
+                  <td>{alert.employeeName}</td>
+                  <td>{alert.deviceName}</td>
+                  <td className={`severity-${alert.severity.toLowerCase()}`}>
+                    {alert.severity}
+                  </td>
+                  <td>{new Date(alert.createdAt).toLocaleString()}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -1,9 +1,14 @@
+from urllib import response
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.services.otp_service import generate_otp, save_otp, verify_otp,otp_storage
 from app.services.email_service import send_otp_email
 from app.services.supabase_service import supabase
 from app.services.security import hash_password
+from jose import jwt
+from datetime import datetime, timedelta
+import os
 
 router = APIRouter()
 
@@ -38,10 +43,15 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
+from dotenv import load_dotenv
+import bcrypt
+
+load_dotenv()
 
 @router.post("/login")
 def login(data: LoginRequest):
-
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    ALGORITHM = "HS256"
     # Find user by email
     response = supabase.table("employees").select("*").eq("email", data.email).execute()
 
@@ -49,19 +59,23 @@ def login(data: LoginRequest):
         raise HTTPException(status_code=400, detail="Invalid credentials")
 
     user = response.data[0]
-
+   
     # Verify password
     if not verify_password(data.password, user["password"]):
         raise HTTPException(status_code=400, detail="Invalid credentials")
-
+        
+    
+    token_data = {
+    "user_id": user["employee_id"],
+    "company_id": user["company_id"],
+    "role": user["role"],
+    "exp": datetime.utcnow() + timedelta(hours=2)
+    }
+    access_token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
     return {
-        "message": "Login successful",
-        "user": {
-            "id": user["employee_id"],
-            "name": user["name"],
-            "role": user["role"],
-            "company_id": user["company_id"]
-        }
+    "access_token": access_token,
+    "token_type": "bearer"
+
     }
     
     

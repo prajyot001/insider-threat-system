@@ -4,7 +4,8 @@ from supabase import create_client
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from collections import defaultdict
-
+from app.utils.auth import get_current_user
+from fastapi import Depends
 
 router = APIRouter()
 i=0
@@ -46,10 +47,6 @@ def get_dashboard_overview():
 @router.get("/dashboard/charts")
 def get_dashboard_charts():
     try:
-        global i
-        i+=1
-       
-        print("Fetching dashboard charts data..."+str(i)+" time")
         # --- Risk Trend (Last 7 Days) ---
         seven_days_ago = (datetime.utcnow() - timedelta(days=7)).isoformat()
 
@@ -96,4 +93,37 @@ def get_dashboard_charts():
             "riskTrend": [],
             "alertsSeverity": []
         }
-    
+
+
+@router.get("/dashboard/alerts")
+def get_recent_alerts(current_user: dict = Depends(get_current_user)):
+
+    company_id = current_user["company_id"]
+
+    alerts = (
+        supabase.table("alerts")
+        .select("""
+            alert_id,
+            severity,
+            description,
+            created_at,
+            employees(name)
+        """)
+        .eq("company_id", company_id)
+        .order("created_at", desc=True)
+        .limit(5)
+        .execute()
+    )
+
+    formatted_alerts = []
+
+    for alert in alerts.data:
+        formatted_alerts.append({
+            "id": alert["alert_id"],
+            "employeeName": alert["employees"]["name"] if alert.get("employees") else "Unknown",
+            "severity": alert["severity"],
+            "description": alert["description"],
+            "createdAt": alert["created_at"]
+        })
+
+    return formatted_alerts

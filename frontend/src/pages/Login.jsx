@@ -29,7 +29,7 @@ function Login() {
     console.log("ENV URL:", process.env.REACT_APP_API_URL);
     try {
       const res = axios.create({
-        baseURL: "https://insider-backend-jggo.onrender.com",
+        baseURL: "https://insider-backend-jggo.onrender.com/auth/login",
       });
       console.log("BASE URL:", res.defaults.baseURL);
       // const res = await api.post("/auth/login", formData);

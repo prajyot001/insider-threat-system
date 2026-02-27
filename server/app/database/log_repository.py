@@ -2,14 +2,28 @@ from .supabase_client import supabase
 from datetime import datetime
 
 def insert_activity_log(log_dict):
+    employee_id = log_dict["employee_id"]
 
+    # 🔹 Step 1: Fetch company_id from employees table
+    emp_response = supabase.table("employees") \
+        .select("company_id") \
+        .eq("id", employee_id) \
+        .single() \
+        .execute()
+
+    if not emp_response.data:
+        raise Exception("Employee not found")
+
+    company_id = emp_response.data["company_id"]
     data = {
+        "company_id": company_id,
         "employee_id": log_dict["employee_id"],
         "device_id": log_dict["device_id"],
         "event_type": "behavior_snapshot",
         "event_data": log_dict,
         "risk_score": log_dict["final_score"],
-        "created_at": datetime.utcnow().isoformat()
+        "created_at": datetime.utcnow().isoformat(),
+        
     }
 
     supabase.table("activity_logs").insert(data).execute()

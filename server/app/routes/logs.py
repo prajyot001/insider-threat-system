@@ -23,7 +23,7 @@ def receive_log(log: LogCreate):
     log_dict["risk_score"] = risk_result["risk_score"]
     log_dict["severity"] = risk_result["severity"]
     log_dict["reasons"] = risk_result["reasons"]
-
+    
     # 2️⃣ Feature engineering
     log_dict["features"] = extract_features(log_dict)
 

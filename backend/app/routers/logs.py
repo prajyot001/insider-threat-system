@@ -8,7 +8,7 @@ router = APIRouter(prefix="/logs", tags=["Logs"])
 def get_logs(current_user: dict = Depends(get_current_user)):
     try:
         response = (
-            supabase.table("active_logs")
+            supabase.table("activity_logs")
             .select("*")
             .eq("company_id", current_user["company_id"])
             .order("created_at", desc=True)

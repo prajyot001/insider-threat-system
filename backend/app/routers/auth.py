@@ -60,7 +60,7 @@ def login(data: LoginRequest):
     if not response.data:
         raise HTTPException(status_code=400, detail="Invalid credentials")
     
-   
+    user = response.data[0]
     # Verify password
     if not verify_password(data.password, user["password"]):
         raise HTTPException(status_code=400, detail="Invalid credentials")

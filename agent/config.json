@@ -1,7 +1,7 @@
 {
   "server_url": "http://127.0.0.1:8000/logs",
-  "device_id": "e636dbba-d0cb-476a-bf52-eadbb6013203",
-  "employee_id": "3eeb3abc-66a1-46ff-83b5-ce1c40733920",
-  "employee_role": "developer",
+  "device_id": "ebedbbc5-f4ee-4895-9098-81382aacdaa5",
+  "employee_id": "da9549cc-1001-47cb-9e65-3df9904c6b69",
+  "employee_role": "employee",
   "log_interval_seconds": 30
 }

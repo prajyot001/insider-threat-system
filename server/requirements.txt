@@ -7,5 +7,5 @@ psutil==5.9.8
 sqlalchemy==2.0.25
 python-multipart==0.0.9
 requests==2.31.0 
-supabase
-pillow
+supabase==2.0.3
+pillow==12.1.1

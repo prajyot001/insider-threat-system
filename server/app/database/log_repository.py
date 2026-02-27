@@ -7,7 +7,7 @@ def insert_activity_log(log_dict):
     # 🔹 Step 1: Fetch company_id from employees table
     emp_response = supabase.table("employees") \
         .select("company_id") \
-        .eq("id", employee_id) \
+        .eq("employee_id", employee_id) \
         .single() \
         .execute()
 

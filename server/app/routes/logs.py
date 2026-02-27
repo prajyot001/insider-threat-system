@@ -12,7 +12,7 @@ from ..services.daily_aggregator import get_daily_summary
 
 router = APIRouter()
 
-@router.post("/logs")
+@router.post("/logs/")
 def receive_log(log: LogCreate):
 
     log_dict = log.model_dump()

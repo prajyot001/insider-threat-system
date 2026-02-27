@@ -9,4 +9,4 @@ app = FastAPI(
 )
 
 app.include_router(health.router, prefix="/health")
-app.include_router(logs.router, prefix="/logs")
+app.include_router(logs.router, prefix="/server")

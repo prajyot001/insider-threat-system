@@ -12,7 +12,7 @@ from ..services.daily_aggregator import get_daily_summary
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/logs")
 def receive_log(log: LogCreate):
 
     log_dict = log.model_dump()
@@ -158,12 +158,12 @@ def receive_log(log: LogCreate):
         "final_score": final_score
     }
 
-@router.get("/")
+@router.get("/logs")
 def view_logs():
     return get_logs()
 
 
-@router.delete("/")
+@router.delete("/logs")
 def delete_logs():
     clear_logs()
     return {"status": "logs cleared"}

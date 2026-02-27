@@ -57,6 +57,8 @@ def login(data: LoginRequest):
     # Find user by email
     response = supabase.table("employees").select("*").eq("email", data.email).execute()
     print("Supabase response:", response)  # Debugging line
+    if response.data.role != "admin":
+        raise HTTPException(status_code=403, detail="only admin can login")
     if not response.data:
         raise HTTPException(status_code=400, detail="Invalid credentials")
 

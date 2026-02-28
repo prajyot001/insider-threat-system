@@ -41,23 +41,26 @@ function Devices() {
             </tr>
           ) : (
             devices.map((device) => (
-              <tr key={device.id}>
-                <td>{device.employee?.name}</td>
+              <tr key={device.device_id}>
+                <td>{device.employee_name || "Unassigned"}</td>
                 <td>{device.device_name}</td>
                 <td>{device.os_type}</td>
-              <td>{device.ip_address}</td>
-              <td>
-                <span className={`status ${device.status}`}>
-                  {device.status}
-                </span>
-              </td>
-              <td>
-                {device.last_active
-                  ? new Date(device.last_active).toLocaleString()
-                  : "Never"}
-              </td>
-            </tr>
-          )))}
+                <td>{device.ip_address || "N/A"}</td>
+
+                <td>
+                  <span className={`status ${device.status}`}>
+                    {device.status}
+                  </span>
+                </td>
+
+                <td>
+                  {device.last_active
+                    ? new Date(device.last_active).toLocaleString()
+                    : "Never"}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

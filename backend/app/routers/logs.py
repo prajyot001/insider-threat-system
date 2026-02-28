@@ -12,14 +12,14 @@ def get_logs(current_user: dict = Depends(get_current_user)):
             supabase.table("activity_logs")
             .select("""
                 *,
-                employees(name)
+                employees(name),
+                devices(device_name)
             """)
             .eq("company_id", current_user["company_id"])
             .order("created_at", desc=True)
             .limit(100)
             .execute()
         )
-
 
        return response.data
 

@@ -38,7 +38,6 @@ function Logs() {
               <th>Device</th>
               <th>Action</th>
               <th>Risk</th>
-              <th>Status</th>
               <th>Time</th>
             </tr>
           </thead>
@@ -50,17 +49,13 @@ function Logs() {
             ) : (
               logs.map((log, index) => (
                 <tr key={index}>
-                  <td>{log.employee?.name}</td>
-                  <td>{log.device_name}</td>
+                  <td>{log.employees?.name}</td>
+                  <td>{log.devices?.device_name}</td>
                   <td>{log.event_type}</td>
                   <td>
                     <span className="risk-badge">{log.risk_score}</span>
                   </td>
-                  <td>
-                    <span className={`status ${log.status}`}>
-                      {log.status}
-                    </span>
-                  </td>
+                 
                   <td>{new Date(log.created_at).toLocaleString()}</td>
                 </tr>
               ))

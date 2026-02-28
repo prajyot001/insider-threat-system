@@ -7,16 +7,21 @@ router = APIRouter(prefix="/logs", tags=["Logs"])
 @router.get("/")
 def get_logs(current_user: dict = Depends(get_current_user)):
     try:
-        response = (
+        
+       response = (
             supabase.table("activity_logs")
-            .select("*")
+            .select("""
+                *,
+                employees(name)
+            """)
             .eq("company_id", current_user["company_id"])
             .order("created_at", desc=True)
             .limit(100)
             .execute()
         )
 
-        return response.data
+
+       return response.data
 
     except Exception as e:
         print("Logs Error:", e)

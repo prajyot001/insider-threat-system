@@ -24,7 +24,7 @@ def get_devices(current_user: dict = Depends(get_current_user)):
             .eq("company_id", current_user["company_id"]) \
             .order("created_at", desc=True) \
             .execute()
-
+        print(response.data)
         formatted = []
 
         for device in response.data:

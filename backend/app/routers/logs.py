@@ -1,3 +1,5 @@
+from urllib import response
+
 from fastapi import APIRouter, Depends, HTTPException
 from app.services.supabase_service import supabase
 from app.services.auth_service import get_current_user
@@ -8,7 +10,7 @@ router = APIRouter(prefix="/logs", tags=["Logs"])
 def get_logs(current_user: dict = Depends(get_current_user)):
     try:
         
-       response = (
+        response = (
             supabase.table("activity_logs")
             .select("""
                 *,
@@ -20,8 +22,8 @@ def get_logs(current_user: dict = Depends(get_current_user)):
             .limit(100)
             .execute()
         )
-
-       return response.data
+        print(response.data)
+        return response.data
 
     except Exception as e:
         print("Logs Error:", e)

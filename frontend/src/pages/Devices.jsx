@@ -42,7 +42,7 @@ function Devices() {
           ) : (
             devices.map((device) => (
               <tr key={device.id}>
-                <td>{device.employee_name}</td>
+                <td>{device.employee?.name}</td>
                 <td>{device.device_name}</td>
                 <td>{device.os_type}</td>
               <td>{device.ip_address}</td>

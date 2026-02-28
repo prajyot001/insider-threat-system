@@ -50,7 +50,7 @@ function Logs() {
             ) : (
               logs.map((log, index) => (
                 <tr key={index}>
-                  <td>{log.name}</td>
+                  <td>{log.employee?.name}</td>
                   <td>{log.device_name}</td>
                   <td>{log.event_type}</td>
                   <td>

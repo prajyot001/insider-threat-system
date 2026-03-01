@@ -50,34 +50,37 @@ load_dotenv()
 
 @router.post("/login")
 def login(data: LoginRequest):
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    ALGORITHM = "HS256"
-    # temp hardcoded admin credentials for testing
-  
-    # Find user by email
-    response = supabase.table("employees").select("*").eq("email", data.email).execute()
-    print("Supabase response:", response)  # Debugging line
-    if not response.data:
-        raise HTTPException(status_code=400, detail="Invalid credentials")
+    try:
+        SECRET_KEY = os.getenv("SECRET_KEY")
+        ALGORITHM = "HS256"
+        # temp hardcoded admin credentials for testing
     
-    user = response.data[0]
-    # Verify password
-    if not verify_password(data.password, user["password"]):
-        raise HTTPException(status_code=400, detail="Invalid credentials")
+        # Find user by email
+        response = supabase.table("employees").select("*").eq("email", data.email).execute()
+        if not response.data:
+            raise HTTPException(status_code=400, detail="Invalid credentials")
         
-    
-    token_data = {
-    "user_id": user["employee_id"],
-    "company_id": user["company_id"],
-    "role": user["role"],
-    "exp": datetime.utcnow() + timedelta(hours=2)
-    }
-    access_token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
-    return {
-    "access_token": access_token,
-    "token_type": "bearer"
+        user = response.data[0]
+        # Verify password
+        if not verify_password(data.password, user["password"]):
+            raise HTTPException(status_code=400, detail="Invalid credentials")
+            
+        
+        token_data = {
+        "user_id": user["employee_id"],
+        "company_id": user["company_id"],
+        "role": user["role"],
+        "exp": datetime.utcnow() + timedelta(hours=2)
+        }
+        access_token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
+        return {
+        "access_token": access_token,
+        "token_type": "bearer"
 
-    }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Login failed")
+    
     
     
     

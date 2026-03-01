@@ -13,14 +13,12 @@ def get_devices(current_user: dict = Depends(get_current_user)):
     try:
         response = (
         supabase.table("devices")
-        .select("""
-        employee:employees!devices_employee_id_fkey(name)
-        """)
-       .eq("company_id", current_user["company_id"])
-       .limit(5)
-       .execute()
+        .select("employee:employees!devices_employee_id_fkey(name)")
+        .eq("company_id", current_user["company_id"])
+        .limit(5)
+        .execute()
         )
-        print("### NEW DEVICES QUERY RUNNING ###")
+        print("### NEW DEVICES QUERY RUNNING check ###")
         print(response.data)
         formatted = []
 

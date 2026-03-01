@@ -11,19 +11,16 @@ def get_devices(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
 
     try:
-        response = supabase.table("devices") \
-            .select("""
-                device_id,
-                device_name,
-                os_type,
-                ip_address,
-                status,
-                last_active,
-                employees(name)
-            """) \
-            .eq("company_id", current_user["company_id"]) \
-            .order("created_at", desc=True) \
-            .execute()
+        response = (
+        supabase.table("devices")
+        .select("""
+        employee:employees!devices_employee_id_fkey(name)
+        """)
+       .eq("company_id", current_user["company_id"])
+       .limit(5)
+       .execute()
+        )
+        print(response.data)
         formatted = []
 
         for device in response.data:

@@ -20,6 +20,7 @@ def get_devices(current_user: dict = Depends(get_current_user)):
        .limit(5)
        .execute()
         )
+        print("### NEW DEVICES QUERY RUNNING ###")
         print(response.data)
         formatted = []
 

@@ -13,26 +13,33 @@ def get_devices(current_user: dict = Depends(get_current_user)):
     try:
         response = (
         supabase.table("devices")
-        .select("employee:employees!devices_employee_id_fkey(name)")
+        .select("""
+        device_id,
+        device_name,
+        os_type,
+        ip_address,
+        status,
+        last_active,
+        employee:employees!devices_employee_id_fkey(name)
+        """)
         .eq("company_id", current_user["company_id"])
-        .limit(5)
+        .order("created_at", desc=True)
         .execute()
         )
-        print("### NEW DEVICES QUERY RUNNING check ###")
-        print(response.data)
         formatted = []
 
         for device in response.data:
             formatted.append({
-                "id": device["device_id"],
-                "device_name": device["device_name"],
-                "os_type": device["os_type"],
-                "ip_address": device["ip_address"],
-                "status": device["status"],
-                "last_active": device["last_active"],
-                "employee_name": device["employees"]["name"]
-                if device.get("employees") else "Unknown"
+            "id": device["device_id"],
+            "device_name": device["device_name"],
+            "os_type": device["os_type"],
+            "ip_address": device["ip_address"],
+            "status": device["status"],
+            "last_active": device["last_active"],
+            "employee_name": device["employee"]["name"]
+            if device.get("employee") else "Unknown"
             })
+
         print(formatted)
         print("employee name:", formatted[0]["employee_name"])
         return formatted

@@ -24,7 +24,7 @@ def get_devices(current_user: dict = Depends(get_current_user)):
             .eq("company_id", current_user["company_id"]) \
             .order("created_at", desc=True) \
             .execute()
-        print(response.data)
+        print("employee name:", response.data[0]["employees"]["name"])
         formatted = []
 
         for device in response.data:
@@ -38,7 +38,8 @@ def get_devices(current_user: dict = Depends(get_current_user)):
                 "employee_name": device["employees"]["name"]
                 if device.get("employees") else "Unknown"
             })
-
+        print(formatted)
+        print("employee name:", formatted[0]["employee_name"])
         return formatted
 
     except Exception as e:

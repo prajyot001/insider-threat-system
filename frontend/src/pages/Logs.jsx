@@ -49,8 +49,8 @@ function Logs() {
             ) : (
               logs.map((log, index) => (
                 <tr key={index}>
-                  <td>{log.employees?.name}</td>
-                  <td>{log.devices?.device_name}</td>
+                  <td>{log.employee_name}</td>
+                  <td>{log.device_name}</td>
                   <td>{log.event_type}</td>
                   <td>
                     <span className="risk-badge">{log.risk_score}</span>

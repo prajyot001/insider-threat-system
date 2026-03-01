@@ -28,3 +28,4 @@ dist/
 package-lock.json
 yarn.lock
 public/
+agent/config.json

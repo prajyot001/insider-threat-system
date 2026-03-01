@@ -38,7 +38,6 @@ def get_devices(current_user: dict = Depends(get_current_user)):
 
         employees = employees_response.data
         employee_map = {e["employee_id"]: e["name"] for e in employees}
-        print(devices)
         formatted = []
 
         for device in devices:
@@ -53,8 +52,7 @@ def get_devices(current_user: dict = Depends(get_current_user)):
             })
 
         
-        print(formatted)
-        print("employee name:", formatted[0]["employee_name"])
+        
         return formatted
 
     except Exception as e:

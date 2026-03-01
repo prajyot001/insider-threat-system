@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException
 from app.services.supabase_service import supabase
 from app.services.auth_service import get_current_user
@@ -11,6 +12,7 @@ def get_devices(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
 
     try:
+        
         devices_response = (
         supabase.table("devices")
         .select("""
@@ -27,6 +29,8 @@ def get_devices(current_user: dict = Depends(get_current_user)):
         .execute()
         )
 
+        now = datetime.now(timezone.utc)   # ✅ timezone aware
+        offline_threshold = now - timedelta(minutes=2)
         devices = devices_response.data
         employee_ids = list({d["employee_id"] for d in devices})
         employees_response = (
@@ -41,12 +45,19 @@ def get_devices(current_user: dict = Depends(get_current_user)):
         formatted = []
 
         for device in devices:
+            computed_status = "offline"
+
+            if device["last_active"]:
+                  last_active = datetime.fromisoformat(device["last_active"])
+
+            if last_active > offline_threshold:
+                  computed_status = "active"
             formatted.append({
                 "id": device["device_id"],
                 "device_name": device["device_name"],
                 "os_type": device["os_type"],
                 "ip_address": device["ip_address"],
-                "status": device["status"],
+                "status": computed_status,
                 "last_active": device["last_active"],
                 "employee_name": employee_map.get(device["employee_id"], "Unknown")
             })

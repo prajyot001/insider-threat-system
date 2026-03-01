@@ -1,7 +1,7 @@
 {
   "server_url": "https://insider-threat-server.onrender.com/server/logs",
-  "device_id": "b5a5a2d9-b79e-4bd3-a67c-242fee97f475",
-  "employee_id": "ae84757d-4339-4d42-b50c-b202ebf36a0a",
+  "device_id": "ebedbbc5-f4ee-4895-9098-81382aacdaa5",
+  "employee_id": "da9549cc-1001-47cb-9e65-3df9904c6b69",
   "employee_role": "employee",
   "log_interval_seconds": 30
 }

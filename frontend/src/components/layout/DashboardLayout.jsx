@@ -54,7 +54,7 @@ function DashboardLayout() {
           </NavLink>
 
           <button className="logout-btn" onClick={handleLogout}>
-            {!collapsed ? "⎋ Logout" : "⎋"}
+            {!collapsed ? "➡️ Logout" : "➡️"}
           </button>
         </nav>
       </aside>

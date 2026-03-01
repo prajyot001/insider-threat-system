@@ -14,13 +14,14 @@ def get_devices(current_user: dict = Depends(get_current_user)):
         response = (
         supabase.table("devices")
         .select("""
-        device_id,
-        device_name,
-        os_type,
-        ip_address,
-        status,
-        last_active,
-        employee:employees!devices_employee_id_fkey(name)
+            device_id,
+            device_name,
+            os_type,
+            ip_address,
+            status,
+            last_active,
+            created_at,
+            employee:employees!devices_employee_id_fkey(name)
         """)
         .eq("company_id", current_user["company_id"])
         .order("created_at", desc=True)

@@ -1,115 +1,99 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../services/api";
 import "../styles/Settings.css";
 
 function Settings() {
-  const [formData, setFormData] = useState({
-    companyName: "SecureMonitor Inc.",
-    adminEmail: "admin@company.com",
-    newPassword: "",
-    confirmPassword: "",
-  });
+  const [form, setForm] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [settings, setSettings] = useState({
-    emailAlerts: true,
-    autoRefresh: false,
-    darkMode: true,
-  });
+  const fetchSettings = async () => {
+    try {
+      const res = await api.get("/settings");
+      setForm({
+        company_name: res.data.company.company_name,
+        risk_threshold: res.data.company.risk_threshold,
+        email_alerts: res.data.company.email_alerts,
+        name: res.data.admin.name,
+        email: res.data.admin.email,
+        new_password: ""
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const { name, value, type, checked } = e.target;
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value
     });
   };
 
-  const handleToggle = (e) => {
-    setSettings({
-      ...settings,
-      [e.target.name]: e.target.checked,
-    });
+  const handleSave = async () => {
+    try {
+      await api.put("/settings", form);
+      alert("Settings Updated Successfully");
+    } catch (err) {
+      alert("Update Failed");
+    }
   };
 
-  const handleSave = () => {
-    alert("Settings saved (UI only for now)");
-  };
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="settings-container">
       <h2>System Settings</h2>
 
-      {/* Profile Section */}
       <div className="settings-card">
-        <h3>Profile Information</h3>
+        <h3>Company Settings</h3>
         <input
-          type="text"
-          name="companyName"
-          value={formData.companyName}
+          name="company_name"
+          value={form.company_name}
           onChange={handleChange}
-          placeholder="Company Name"
         />
+
+        <label>Risk Threshold: {form.risk_threshold}</label>
         <input
-          type="email"
-          name="adminEmail"
-          value={formData.adminEmail}
+          type="range"
+          name="risk_threshold"
+          min="0"
+          max="100"
+          value={form.risk_threshold}
           onChange={handleChange}
-          placeholder="Admin Email"
         />
+
+        <label>
+          Email Alerts
+          <input
+            type="checkbox"
+            name="email_alerts"
+            checked={form.email_alerts}
+            onChange={handleChange}
+          />
+        </label>
       </div>
 
-      {/* Password Section */}
       <div className="settings-card">
-        <h3>Change Password</h3>
+        <h3>Admin Profile</h3>
+        <input name="name" value={form.name} onChange={handleChange} />
+        <input name="email" value={form.email} onChange={handleChange} />
         <input
           type="password"
-          name="newPassword"
-          placeholder="New Password"
+          name="new_password"
+          placeholder="New Password (optional)"
           onChange={handleChange}
         />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* System Preferences */}
-      <div className="settings-card">
-        <h3>Preferences</h3>
-
-        <label className="toggle-row">
-          <span>Email Alerts</span>
-          <input
-            type="checkbox"
-            name="emailAlerts"
-            checked={settings.emailAlerts}
-            onChange={handleToggle}
-          />
-        </label>
-
-        <label className="toggle-row">
-          <span>Auto Refresh Dashboard</span>
-          <input
-            type="checkbox"
-            name="autoRefresh"
-            checked={settings.autoRefresh}
-            onChange={handleToggle}
-          />
-        </label>
-
-        <label className="toggle-row">
-          <span>Dark Mode</span>
-          <input
-            type="checkbox"
-            name="darkMode"
-            checked={settings.darkMode}
-            onChange={handleToggle}
-          />
-        </label>
       </div>
 
       <button className="save-btn" onClick={handleSave}>
-        Save Settings
+        Save Changes
       </button>
     </div>
   );

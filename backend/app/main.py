@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from app.routers import dashboard
 from app.routers import employees
 from app.routers import reports
-from app.routers import auth, employees, alerts, devices ,logs
+from app.routers import auth, employees, alerts, devices ,logs, settings
 import os
 
 
@@ -33,3 +33,4 @@ app.include_router(auth.router)
 app.include_router(alerts.router)
 app.include_router(devices.router)
 app.include_router(logs.router)
+app.include_router(settings.router)

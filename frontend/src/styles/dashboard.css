@@ -158,3 +158,166 @@
   align-items: center;
   gap: 10px;
 }
+
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #94a3b8; /* default icon/text color */
+  transition: all 0.3s ease;
+}
+
+.nav-item svg {
+  stroke: #94a3b8;  /* icon default color */
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.nav-item:hover svg {
+  stroke: #ffffff;
+}
+
+/* Active link */
+.nav-item.active {
+  background: #1e293b;
+  color: #3b82f6;   /* active text color */
+}
+
+.nav-item.active svg {
+  stroke: #3b82f6;  /* active icon color */
+}
+
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  text-decoration: none;
+  color: #94a3b8;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Icon default */
+.nav-item svg {
+  stroke: #94a3b8;
+  transition: 0.3s;
+}
+
+/* Hover */
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.nav-item:hover svg {
+  stroke: #ffffff;
+}
+
+/* Active Link */
+.nav-item.active {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Animated Left Indicator */
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  height: 60%;
+  width: 4px;
+  background: #3b82f6;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+/* Active icon color */
+.nav-item.active svg {
+  stroke: #3b82f6;
+}
+.dashboard-wrapper.collapsed .nav-item {
+  justify-content: center;
+}
+
+.tooltip {
+  position: absolute;
+  left: 60px;
+  background: #1e293b;
+  color: white;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: 0.2s ease;
+  pointer-events: none;
+}
+
+/* Show tooltip on hover */
+.dashboard-wrapper.collapsed .nav-item:hover .tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  text-decoration: none;
+  color: #94a3b8;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Icon default */
+.nav-item svg {
+  stroke: #94a3b8;
+  transition: 0.3s;
+}
+
+/* Hover */
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.nav-item:hover svg {
+  stroke: #ffffff;
+}
+
+/* Active Link */
+.nav-item.active {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Animated Left Indicator */
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  height: 60%;
+  width: 4px;
+  background: #3b82f6;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+/* Active icon color */
+.nav-item.active svg {
+  stroke: #3b82f6;
+}

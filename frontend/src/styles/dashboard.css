@@ -138,3 +138,16 @@
 .dashboard-wrapper.collapsed .toggle-btn {
   margin-top: 10px;
 }
+
+.nav-links a,
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+.nav-links a svg,
+.logout-btn svg {
+  min-width: 18px;
+}

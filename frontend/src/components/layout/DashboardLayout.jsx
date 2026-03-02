@@ -1,5 +1,18 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {
+  LayoutDashboard,
+  Users,
+  Monitor,
+  AlertTriangle,
+  FileText,
+  BarChart3,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
+
 import "../../styles/dashboard.css";
 
 function DashboardLayout() {
@@ -13,61 +26,66 @@ function DashboardLayout() {
 
   return (
     <div className={`dashboard-wrapper ${collapsed ? "collapsed" : ""}`}>
+      
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo-section">{collapsed ? "SM" : "SecureMonitor"}</div>
+        <div className="logo-section">
+          {collapsed ? "SM" : "SecureMonitor"}
+        </div>
 
         <nav className="nav-links">
+
           <NavLink to="/dashboard" end>
-            <span>🏠</span>
-            {!collapsed && " Dashboard"}
+            <LayoutDashboard size={18} />
+            {!collapsed && <span>Dashboard</span>}
           </NavLink>
 
           <NavLink to="/dashboard/employees">
-            <span>👤</span>
-            {!collapsed && " Employees"}
+            <Users size={18} />
+            {!collapsed && <span>Employees</span>}
           </NavLink>
 
           <NavLink to="/dashboard/devices">
-            <span>💻</span>
-            {!collapsed && " Devices"}
+            <Monitor size={18} />
+            {!collapsed && <span>Devices</span>}
           </NavLink>
 
           <NavLink to="/dashboard/alerts">
-            <span>🚨</span>
-            {!collapsed && " Alerts"}
+            <AlertTriangle size={18} />
+            {!collapsed && <span>Alerts</span>}
           </NavLink>
 
           <NavLink to="/dashboard/logs">
-            <span>📊</span>
-            {!collapsed && " Logs"}
+            <FileText size={18} />
+            {!collapsed && <span>Logs</span>}
           </NavLink>
 
           <NavLink to="/dashboard/reports">
-            <span>📈</span>
-            {!collapsed && " Reports"}
+            <BarChart3 size={18} />
+            {!collapsed && <span>Reports</span>}
           </NavLink>
 
           <NavLink to="/dashboard/settings">
-            <span>⚙️</span>
-            {!collapsed && " Settings"}
+            <Settings size={18} />
+            {!collapsed && <span>Settings</span>}
           </NavLink>
 
           <button className="logout-btn" onClick={handleLogout}>
-            {!collapsed ? "➡️ Logout" : "➡️"}
+            <LogOut size={18} />
+            {!collapsed && <span>Logout</span>}
           </button>
+
         </nav>
       </aside>
 
       {/* Main Area */}
       <div className="main-content">
         <div className="sidebar-header">
-
           <button
             className="toggle-btn"
             onClick={() => setCollapsed(!collapsed)}
           >
-            {collapsed ? "➤" : "◀"}
+            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link ,NavLink} from "react-router-dom";
 import "../styles/global.css";
 import { motion } from "framer-motion";
 import logo from "../assets/icons/logo.png";
@@ -11,8 +11,10 @@ function Home() {
        {/* Top Header */}
       <header className="top-header">
         <div className="logo-section">
+          <NavLink to="/" className="logo-section">
           <img src={logo} alt="Logo" className="real-logo" />
           <span className="company-name">SecureMonitor</span>
+        </NavLink>
         </div>
       </header>
 

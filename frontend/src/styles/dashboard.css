@@ -151,3 +151,10 @@
 .logout-btn svg {
   min-width: 18px;
 }
+.logo-section {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

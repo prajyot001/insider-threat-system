@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 import "../styles/auth.css";
 import logo from "../assets/icons/logo.png";
 import LoaderOverlay from "../components/common/Loader";
@@ -54,10 +54,10 @@ function Login() {
   return (
     <div className="auth-wrapper">
       <header className="top-header">
-        <Link to="/" className="logo-section">
+        <NavLink to="/" className="logo-section">
           <img src={logo} alt="Logo" className="real-logo" />
           <span className="company-name">SecureMonitor</span>
-        </Link>
+        </NavLink>
       </header>
 
       <div className="auth-container">

@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import logo from "../../assets/icons/logo.png";
 import {
   LayoutDashboard,
   Users,
@@ -30,7 +31,8 @@ function DashboardLayout() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo-section">
-          {collapsed ? "SM" : "SecureMonitor"}
+          <img src={logo} alt="Logo" className="real-logo" />
+          {!collapsed && <span className="logo-text">SecureMonitor</span>}
         </div>
 
         <nav className="nav-links">
@@ -85,7 +87,7 @@ function DashboardLayout() {
             className="toggle-btn"
             onClick={() => setCollapsed(!collapsed)}
           >
-            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+            {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
           </button>
         </div>
 
